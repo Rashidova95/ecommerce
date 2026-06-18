@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import F
 from rest_framework import serializers
 
 from products.models import Order, Product
@@ -9,8 +10,8 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'product', 'customer', 'quantity', 'created_at', 'total_price', 'phone_number', 'is_paid']
-        read_only_fields = ['customer']
+        fields = ['id', 'product', 'customer', 'quantity', 'created_at', 'total_price', 'phone_number']
+        read_only_fields = ['customer', 'is_paid']
 
     def get_total_price(self, obj):
         return obj.product.price * obj.quantity
