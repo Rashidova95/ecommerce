@@ -7,7 +7,7 @@ from .models import Payment
 from products.models import Order
 from .serializers import PaymentSerializer
 
-# stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class CreateChargeView(views.APIView):
