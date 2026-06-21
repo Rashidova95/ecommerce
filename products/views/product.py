@@ -5,6 +5,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
+
 from products.filters import ProductFilter
 from products.models import Product
 from products.permissions import IsStaffOrReadOnly
@@ -44,13 +45,13 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def top_rated(self, request):
-
         # Assuming a related name of "reviews" from Review model to Product model
         top_products = Product.objects.annotate(avg_rating=models.Avg('reviews__rating')).order_by('-avg_rating')[:2]
         serializer = ProductSerializer(top_products, many=True)
         return Response(serializer.data)
 
     @action(detail=True, methods=['get'])
+
     def average_rating(self, request, pk=None):
         product = self.get_object()
         reviews = product.reviews.all()
