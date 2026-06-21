@@ -9,7 +9,7 @@ from .serializers import SMSSerializer, VerifySMSSerializer
 from django.conf import settings
 User = get_user_model()
 
-# SMS_KEY = settings.SMS_KEY
+SMS_KEY = settings.SMS_KEY
 
 
 class SMSLoginViewSet(viewsets.ViewSet):
@@ -23,7 +23,8 @@ class SMSLoginViewSet(viewsets.ViewSet):
             verification_code = str(random.randint(100000, 999999))
 
             # Send SMS via Infobip
-            url = 'https://43vvd1.api.infobip.com/sms/2/text/advanced'
+            url = 'https://vyldr1.api.infobip.com/sms/2/text/advanced'
+
             headers = {
                 'Authorization': SMS_KEY,
                 'Content-Type': 'application/json',
@@ -34,7 +35,7 @@ class SMSLoginViewSet(viewsets.ViewSet):
             payload = {
                 'messages': [
                     {
-                        'from': 'delx.uz',
+                        # 'from': 'delx.uz',
                         'destinations': [
                             {
                                 'to': phone_number
@@ -45,6 +46,7 @@ class SMSLoginViewSet(viewsets.ViewSet):
                 ]
             }
             response = requests.post(url, json=payload, headers=headers)
+            print(response.status_code, response.json())
 
             if response.status_code == 200:
                 # Store the verification code and phone number in cache for 5 minutes
